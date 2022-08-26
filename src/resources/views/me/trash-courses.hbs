@@ -1,7 +1,8 @@
 <div class='mt-4'>
   <div>
-    <h1>Khóa học của tôi</h1>
-    <a href='/me/trash/courses' style='float: right;'>Thùng rác</a>
+    <a href='/me/stored/courses'>Trở lại danh sách khóa học</a>
+    <h1>Khóa học đã xóa gần </h1>
+
   </div>
 
   <table class='table mt-4'>
@@ -21,20 +22,20 @@
           <td>{{this.level}}</td>
           <td>{{this.createdAt}}</td>
           <td>
-            <a href='/courses/{{this._id}}/edit' class='btn btn-link'>Sửa</a>
+            <a href='' class='btn btn-link btn-restore'>Khôi phục</a>
             <a
               href=''
               class='btn btn-link'
               data-toggle='modal'
               data-id='{{this._id}}'
               data-target='#delete-course-modal'
-            >Xóa</a>
+            >Xóa mãi mãi</a>
           </td>
         </tr>
       {{else}}
         <tr>
-          <td colspan='5' class='text-center'>Bạn chưa đăng khóa học nào.
-            <a href='/courses/create'>Đăng khóa học</a></td>
+          <td colspan='5' class='text-center'>Thùng rác trống.
+            <a href='/me/stored/courses'>Danh sách khóa học</a></td>
         </tr>
       {{/each}}
     </tbody>
@@ -69,14 +70,19 @@
 </div>
 
 <form method='post' name='delete-course-form'></form>
+<form method='post' name='restore-course-form'></form>
 
 <script>
   document.addEventListener('DOMContentLoaded', function (){ var courseID; var
-  deleteForm = document.forms['delete-course-form']; var btnDeleteCourse =
-  document.getElementById('btn-delete-course');
-  $('#delete-course-modal').on('show.bs.modal', function (event) { var button =
-  $(event.relatedTarget); courseID = button.data('id'); });
-  btnDeleteCourse.onclick = function(){ deleteForm.action = '/courses/' +
-  courseID + '?_method=DELETE'; deleteForm.submit() } })
+  deleteForm = document.forms['delete-course-form']; var restoreForm =
+  document.forms['restore-course-form']; var btnDeleteCourse =
+  document.getElementById('btn-delete-course'); var restoreBtn =
+  $('.btn-restore'); $('#delete-course-modal').on('show.bs.modal', function
+  (event) { var button = $(event.relatedTarget); courseID = button.data('id');
+  }); btnDeleteCourse.onclick = function(){ deleteForm.action = '/courses/' +
+  courseID + '?_method=DELETE'; deleteForm.submit(); } //Restore btn Click
+  restoreBtn.click(function(e){ e.preventDefault(); var courseID =
+  $(this).data('id'); console.log(courseID); restoreForm.action = '/courses/' +
+  courseID + '/restore?_method=PATCH'; restoreForm.submit(); }) })
 
 </script>
